@@ -124,3 +124,4 @@ dmypy.json
 # End of https://www.gitignore.io/api/python,jupyternotebooks
 
 venv/
+out*.txt # output files of my code
