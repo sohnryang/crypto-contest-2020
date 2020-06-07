@@ -23,7 +23,6 @@ def normalized_freq(text):
     result = np.zeros((26,))
     for i in range(26):
         if i not in counter:
-            result[i] = 0
             continue
         result[i] = counter[i]
     return result / len(text)
@@ -34,30 +33,28 @@ def maximum_likelyhood(text):
 def crack_hill(ciphertext, blocksize):
     assert len(ciphertext) % blocksize == 0
 
-    blocks = np.array_split(ciphertext, len(ciphertext) // blocksize)
+    blocks = np.array(np.array_split(ciphertext, len(ciphertext) // blocksize))
     m = len(blocks)
     d = np.zeros((m, blocksize)).astype(int)
     for t in range(blocksize):
         for i in range(m):
-            d[i][t] = sum(blocks[i][:t + 1]) % 26
-
+            d[i, t] = sum(blocks[i, :t + 1]) % 26
     pprint(d)
 
-    inv_K = np.zeros(blocksize, blocksize).astype(int)
+    inv_K = np.zeros((blocksize, blocksize)).astype(int)
     I = np.full((blocksize,), -np.inf)
-    p = [0] * m
+    p = np.zeros((m,)).astype(int)
 
     for x in itertools.product(range(26), repeat=blocksize):
         if sum(x) == 0:
             continue
-        vec = np.array(x).astype(int)
+        vec = np.array(x[::-1]).astype(int)
         t = np.argmax(vec != 0)
         print('Current vector: ', end='')
         pprint(vec)
+        print('t = %d' % t)
         for i in range(m):
-            p[i] = int((p[i] + d[i][t]) % 26)
-        print('Current p: ', end='')
-        print(p)
+            p[i] = (p[i] + d[i, t]) % 26
         iml_x = maximum_likelyhood(p)
         iml_y = I.min()
         cand = I.argmin()
@@ -65,16 +62,10 @@ def crack_hill(ciphertext, blocksize):
         mod_13_is_zero = vec % 13 == 0
         if not np.all(np.logical_or(mod_2_is_zero, mod_13_is_zero)):
             if iml_y < iml_x:
-                np.swapaxes(inv_K, 0, 1)
-                inv_K[cand] = vec
-                np.swapaxes(inv_K, 0, 1)
+                transposed = np.transpose(inv_K)
+                transposed[cand] = vec
                 I[cand] = iml_x
-            print('Current matrix:')
-            pprint(inv_K)
-            print('Current I: ', end='')
-            pprint(I)
-        else:
-            print('Skipped')
+                pprint(inv_K)
 
     return inv_K
 
@@ -84,11 +75,12 @@ def text_to_numlist(text):
         result.append(ord(c) - ord('A'))
     return result
 
-assert len(argv) == 3
-with open(argv[1]) as f:
-    encrypted = f.read().strip()
+if __name__ == '__main__':
+    assert len(argv) == 3
+    with open(argv[1]) as f:
+        encrypted = f.read().strip()
 
-numlist = text_to_numlist(encrypted)
-print(numlist)
-key = crack_hill(numlist, int(argv[2]))
-pprint(key)
+    numlist = text_to_numlist(encrypted)
+    print(numlist)
+    key = crack_hill(numlist, int(argv[2]))
+    pprint(key)
