@@ -51,8 +51,7 @@ def crack_hill(ciphertext, blocksize):
         vec = np.array(x[::-1]).astype(int)
         t = np.argmax(vec != 0)
         print('Current vector: ', end='')
-        pprint(vec)
-        print('t = %d' % t)
+        print(x[::-1])
         for i in range(m):
             p[i] = (p[i] + d[i, t]) % 26
         iml_x = maximum_likelyhood(p)
@@ -60,12 +59,11 @@ def crack_hill(ciphertext, blocksize):
         cand = I.argmin()
         mod_2_is_zero = vec % 2 == 0
         mod_13_is_zero = vec % 13 == 0
-        if not np.all(np.logical_or(mod_2_is_zero, mod_13_is_zero)):
+        if not np.all(mod_2_is_zero) or not np.all(mod_13_is_zero):
             if iml_y < iml_x:
                 transposed = np.transpose(inv_K)
                 transposed[cand] = vec
                 I[cand] = iml_x
-                pprint(inv_K)
 
     return inv_K
 
