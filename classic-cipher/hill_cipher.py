@@ -39,7 +39,6 @@ def crack_hill(ciphertext, blocksize):
     for t in range(blocksize):
         for i in range(m):
             d[i, t] = sum(blocks[i, :t + 1]) % 26
-    pprint(d)
 
     inv_K = np.zeros((blocksize, blocksize)).astype(int)
     I = np.full((blocksize,), -np.inf)
@@ -101,7 +100,6 @@ if __name__ == '__main__':
         encrypted = f.read().strip()
 
     numlist = text_to_numlist(encrypted)
-    print(numlist)
     key = crack_hill(numlist, int(argv[2]))
     pprint(key)
     print(decrypt_hill(numlist, key))
