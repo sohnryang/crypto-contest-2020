@@ -52,7 +52,7 @@ def crack_hill(ciphertext, blocksize, metric=index_of_coincidence):
             continue
         vec = np.array(x[::-1]).astype(int)
         t = np.argmax(vec != 0)
-        print('\r%s' % ' ' * 80, end='')
+        print('\r%s' % ' ' * 100, end='')
         print('\rCurrent vector: ', end='')
         print(x[::-1], end='')
         for i in range(m):
@@ -106,7 +106,8 @@ if __name__ == '__main__':
     numlist = text_to_numlist(encrypted)
     key = crack_hill(numlist, int(argv[2]))
     print()
-    print('Calculated inverse matrix:')
-    pprint(key)
-    print('Decrypted text:')
-    print(decrypt_hill(numlist, key))
+    with open('result.txt', 'w') as f:
+        f.writelines(['Calculated inverse matrix:\n',
+                      str(key), '\n',
+                      'Decrypted text:\n',
+                      decrypt_hill(numlist, key), '\n'])
