@@ -30,7 +30,10 @@ def normalized_freq(text):
 def maximum_likelyhood(text):
     return -sum(normalized_freq(text) * np.log2(monogram_prob))
 
-def crack_hill(ciphertext, blocksize):
+def index_of_coincidence(text):
+    return sum(normalized_freq(text) * monogram_prob)
+
+def crack_hill(ciphertext, blocksize, metric=index_of_coincidence):
     assert len(ciphertext) % blocksize == 0
 
     blocks = np.array(np.array_split(ciphertext, len(ciphertext) // blocksize))
