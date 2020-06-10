@@ -62,7 +62,7 @@ def crack_hill(ciphertext, blocksize, metric=index_of_coincidence):
         cand = I.argmin()
         mod_2_is_zero = vec % 2 == 0
         mod_13_is_zero = vec % 13 == 0
-        if not np.all(mod_2_is_zero) or not np.all(mod_13_is_zero):
+        if not np.all(np.logical_or(mod_2_is_zero, mod_13_is_zero)):
             if iml_y < iml_x:
                 transposed = np.transpose(inv_K)
                 transposed[cand] = vec
