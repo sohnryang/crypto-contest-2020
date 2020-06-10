@@ -73,6 +73,28 @@ def text_to_numlist(text):
         result.append(ord(c) - ord('A'))
     return result
 
+def encrypt_hill(text, key):
+    assert len(text) % len(key) == 0
+    blocksize = len(key)
+    blocks = np.array_split(text, len(text) // blocksize)
+    encrypted_text = ''
+    for block in blocks:
+        encrypted_block = np.matmul(block, key) % 26
+        for c in encrypted_block:
+            encrypted_text += chr(c + ord('A'))
+    return encrypted_text
+
+def decrypt_hill(text, key):
+    assert len(text) % len(key) == 0
+    blocksize = len(key)
+    blocks = np.array_split(text, len(text) // blocksize)
+    decrypted_text = ''
+    for block in blocks:
+        decrypted_block = np.matmul(block, key) % 26
+        for c in decrypted_block:
+            decrypted_text += chr(c + ord('a'))
+    return decrypted_text
+
 if __name__ == '__main__':
     assert len(argv) == 3
     with open(argv[1]) as f:
@@ -82,3 +104,4 @@ if __name__ == '__main__':
     print(numlist)
     key = crack_hill(numlist, int(argv[2]))
     pprint(key)
+    print(decrypt_hill(numlist, key))
