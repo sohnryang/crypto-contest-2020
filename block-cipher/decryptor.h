@@ -59,7 +59,7 @@
 typedef unsigned char Byte;
 typedef unsigned int  Word;
 
-/* S-boxµéÀ» Á¤ÀÇÇÏ±â À§ÇÑ ¸¶Å©·Î. */
+/* S-boxë“¤ì„ ì •ì˜í•˜ê¸° ìœ„í•œ ë§ˆí¬ë¡œ. */
 
 #define AAA(V) 0x ## 00 ## V ## V ## V
 #define BBB(V) 0x ## V ## 00 ## V ## V
@@ -69,19 +69,19 @@ typedef unsigned int  Word;
   NNN(x0),NNN(x1),NNN(x2),NNN(x3),NNN(x4),NNN(x5),NNN(x6),NNN(x7),	\
     NNN(x8),NNN(x9),NNN(xa),NNN(xb),NNN(xc),NNN(xd),NNN(xe),NNN(xf)
 
-/* BY(X, Y)´Â Word XÀÇ Y¹øÂ° ¹ÙÀÌÆ®
- * BRF(T,R)Àº T>>RÀÇ ÇÏÀ§ 1¹ÙÀÌÆ®
- * WO(X, Y)´Â Byte array X¸¦ Word array·Î °£ÁÖÇÒ ¶§ Y¹øÂ° Word
+/* BY(X, Y)ëŠ” Word Xì˜ Yë²ˆì§¸ ë°”ì´íŠ¸
+ * BRF(T,R)ì€ T>>Rì˜ í•˜ìœ„ 1ë°”ì´íŠ¸
+ * WO(X, Y)ëŠ” Byte array Xë¥¼ Word arrayë¡œ ê°„ì£¼í•  ë•Œ Yë²ˆì§¸ Word
  */
 
 #define BY(X,Y) (((Byte *)(&X))[Y])
 #define BRF(T,R) ((Byte)((T)>>(R)))
 #define WO(X,Y) (((Word *)(X))[Y])
 
- /* abcdÀÇ 4 Byte·Î µÈ Word¸¦ dcba·Î º¯È¯ÇÏ´Â ÇÔ¼ö  */
+ /* abcdì˜ 4 Byteë¡œ ëœ Wordë¥¼ dcbaë¡œ ë³€í™˜í•˜ëŠ” í•¨ìˆ˜  */
 #if defined(_MSC_VER)
-/* MSC »ç¿ë È¯°æÀÇ °æ¿ì¿¡´Â _lrotr() ÇÔ¼ö¸¦
- * ÀÌ¿ëÇÒ ¼ö ÀÖÀ¸¹Ç·Î ¾à°£ÀÇ ¼Óµµ Çâ»óÀÌ °¡´ÉÇÏ´Ù. */
+/* MSC ì‚¬ìš© í™˜ê²½ì˜ ê²½ìš°ì—ëŠ” _lrotr() í•¨ìˆ˜ë¥¼
+ * ì´ìš©í•  ìˆ˜ ìˆìœ¼ë¯€ë¡œ ì•½ê°„ì˜ ì†ë„ í–¥ìƒì´ ê°€ëŠ¥í•˜ë‹¤. */
 #define ReverseWord(W) {						\
     (W)=(0xff00ff00 & _lrotr((W), 8)) ^ (0x00ff00ff & _lrotl((W), 8));	\
   }
@@ -91,8 +91,8 @@ typedef unsigned int  Word;
   }
 #endif
 
-/* Byte array¸¦ Word¿¡ ½Æ´Â ÇÔ¼ö.  LITTLE_ENDIANÀÇ °æ¿ì
- * ¿£µğ¾È º¯È¯ °úÁ¤À» °ÅÄ£´Ù. */
+/* Byte arrayë¥¼ Wordì— ì‹£ëŠ” í•¨ìˆ˜.  LITTLE_ENDIANì˜ ê²½ìš°
+ * ì—”ë””ì•ˆ ë³€í™˜ ê³¼ì •ì„ ê±°ì¹œë‹¤. */
 #ifdef LITTLE_ENDIAN
 #define WordLoad(ORIG, DEST) {			\
     Word ___t;					\
@@ -121,27 +121,27 @@ typedef unsigned int  Word;
     rk += 16;							\
   }
 
-/* S-Box Layer 1 + M º¯È¯ */
+/* S-Box Layer 1 + M ë³€í™˜ */
 #define SBL1_M(T0,T1,T2,T3) {						\
     T0=S1[BRF(T0,24)]^S2[BRF(T0,16)]^X1[BRF(T0,8)]^X2[BRF(T0,0)];	\
     T1=S1[BRF(T1,24)]^S2[BRF(T1,16)]^X1[BRF(T1,8)]^X2[BRF(T1,0)];	\
     T2=S1[BRF(T2,24)]^S2[BRF(T2,16)]^X1[BRF(T2,8)]^X2[BRF(T2,0)];	\
     T3=S1[BRF(T3,24)]^S2[BRF(T3,16)]^X1[BRF(T3,8)]^X2[BRF(T3,0)];	\
   }
-/* S-Box Layer 2 + M º¯È¯ */
+/* S-Box Layer 2 + M ë³€í™˜ */
 #define SBL2_M(T0,T1,T2,T3) {						\
     T0=X1[BRF(T0,24)]^X2[BRF(T0,16)]^S1[BRF(T0,8)]^S2[BRF(T0,0)];	\
     T1=X1[BRF(T1,24)]^X2[BRF(T1,16)]^S1[BRF(T1,8)]^S2[BRF(T1,0)];	\
     T2=X1[BRF(T2,24)]^X2[BRF(T2,16)]^S1[BRF(T2,8)]^S2[BRF(T2,0)];	\
     T3=X1[BRF(T3,24)]^X2[BRF(T3,16)]^S1[BRF(T3,8)]^S2[BRF(T3,0)];	\
   }
-/* ¿öµå ´ÜÀ§ÀÇ º¯È¯ */
+/* ì›Œë“œ ë‹¨ìœ„ì˜ ë³€í™˜ */
 #define MM(T0,T1,T2,T3) {			\
     (T1)^=(T2); (T2)^=(T3); (T0)^=(T1);		\
     (T3)^=(T1); (T2)^=(T0); (T1)^=(T2);		\
   }
-/* P º¯È¯.  È®»ê °èÃşÀÇ Áß°£¿¡ µé¾î°¡´Â ¹ÙÀÌÆ® ´ÜÀ§ º¯È¯ÀÌ´Ù.
- * ÀÌ ºÎºĞÀº endian°ú ¹«°üÇÏ´Ù.  */
+/* P ë³€í™˜.  í™•ì‚° ê³„ì¸µì˜ ì¤‘ê°„ì— ë“¤ì–´ê°€ëŠ” ë°”ì´íŠ¸ ë‹¨ìœ„ ë³€í™˜ì´ë‹¤.
+ * ì´ ë¶€ë¶„ì€ endianê³¼ ë¬´ê´€í•˜ë‹¤.  */
 #if defined(_MSC_VER)
 #define P(T0,T1,T2,T3) {					\
     (T1) = (((T1)<< 8)&0xff00ff00) ^ (((T1)>> 8)&0x00ff00ff);	\
@@ -156,19 +156,19 @@ typedef unsigned int  Word;
   }
 #endif
 
- /* FO: È¦¼ö¹øÂ° ¶ó¿îµåÀÇ F ÇÔ¼ö
-  * FE: Â¦¼ö¹øÂ° ¶ó¿îµåÀÇ F ÇÔ¼ö
-  * MM°ú P´Â ¹ÙÀÌÆ® ´ÜÀ§¿¡¼­ endian¿¡ ¹«°üÇÏ°Ô µ¿ÀÏÇÑ °á°ú¸¦ ÁÖ¸ç,
-  * ¶ÇÇÑ endian º¯È¯°ú °¡È¯ÀÌ´Ù.  ¶ÇÇÑ, SBLi_MÀº LITTLE_ENDIAN¿¡¼­
-  * °á°úÀûÀ¸·Î Word ´ÜÀ§·Î endianÀ» µÚÁıÀº °á°ú¸¦ ÁØ´Ù.
-  * Áï, FO, FE´Â BIG_ENDIAN È¯°æ¿¡¼­´Â ARIA spec°ú µ¿ÀÏÇÑ °á°ú¸¦,
-  * LITTLE_ENDIAN È¯°æ¿¡¼­´Â ARIA spec¿¡¼­ Á¤ÀÇÇÑ º¯È¯+endian º¯È¯À»
-  * ÁØ´Ù. */
+ /* FO: í™€ìˆ˜ë²ˆì§¸ ë¼ìš´ë“œì˜ F í•¨ìˆ˜
+  * FE: ì§ìˆ˜ë²ˆì§¸ ë¼ìš´ë“œì˜ F í•¨ìˆ˜
+  * MMê³¼ PëŠ” ë°”ì´íŠ¸ ë‹¨ìœ„ì—ì„œ endianì— ë¬´ê´€í•˜ê²Œ ë™ì¼í•œ ê²°ê³¼ë¥¼ ì£¼ë©°,
+  * ë˜í•œ endian ë³€í™˜ê³¼ ê°€í™˜ì´ë‹¤.  ë˜í•œ, SBLi_Mì€ LITTLE_ENDIANì—ì„œ
+  * ê²°ê³¼ì ìœ¼ë¡œ Word ë‹¨ìœ„ë¡œ endianì„ ë’¤ì§‘ì€ ê²°ê³¼ë¥¼ ì¤€ë‹¤.
+  * ì¦‰, FO, FEëŠ” BIG_ENDIAN í™˜ê²½ì—ì„œëŠ” ARIA specê³¼ ë™ì¼í•œ ê²°ê³¼ë¥¼,
+  * LITTLE_ENDIAN í™˜ê²½ì—ì„œëŠ” ARIA specì—ì„œ ì •ì˜í•œ ë³€í™˜+endian ë³€í™˜ì„
+  * ì¤€ë‹¤. */
 #define FO {SBL1_M(t0,t1,t2,t3) MM(t0,t1,t2,t3) P(t0,t1,t2,t3) MM(t0,t1,t2,t3)}
 #define FE {SBL2_M(t0,t1,t2,t3) MM(t0,t1,t2,t3) P(t2,t3,t0,t1) MM(t0,t1,t2,t3)}
 
   /* n-bit right shift of Y XORed to X */
-  /* Word ´ÜÀ§·Î Á¤ÀÇµÈ ºí·Ï¿¡¼­ÀÇ È¸Àü + XORÀÌ´Ù. */
+  /* Word ë‹¨ìœ„ë¡œ ì •ì˜ëœ ë¸”ë¡ì—ì„œì˜ íšŒì „ + XORì´ë‹¤. */
 #define GSRK(X, Y, n) {							\
     q = 4-((n)/32);							\
     r = (n) % 32;							\
@@ -179,7 +179,7 @@ typedef unsigned int  Word;
     rk += 16;								\
   }
 
-/* DecKeySetup()¿¡¼­ »ç¿ëÇÏ´Â ¸¶Å©·Î */
+/* DecKeySetup()ì—ì„œ ì‚¬ìš©í•˜ëŠ” ë§ˆí¬ë¡œ */
 #if defined(_MSC_VER)
 #define WordM1(X,Y) {				\
     w=_lrotr((X), 8);				\
@@ -198,29 +198,29 @@ struct CTX
 	Byte* IV;
 };
 
-/* ¾ÏÈ£È­ ÇÔ¼ö.
- * const Byte *i: ÀÔ·Â
- * int Nr: ¶ó¿îµå ¼ö
- * const Byte *rk: ¶ó¿îµå Å°µé
- * Byte *o: Ãâ·Â
+/* ì•”í˜¸í™” í•¨ìˆ˜.
+ * const Byte *i: ì…ë ¥
+ * int Nr: ë¼ìš´ë“œ ìˆ˜
+ * const Byte *rk: ë¼ìš´ë“œ í‚¤ë“¤
+ * Byte *o: ì¶œë ¥
  */
 extern "C" DECRYPTOR_API void Crypt(const Byte* i, int Nr, const Byte* rk, Byte* o);
 
-/* ¾ÏÈ£È­ ¶ó¿îµå Å° »ı¼º
- * const Byte *mk: ¸¶½ºÅÍ Å°
- * Byte *rk: ¶ó¿îµå Å°
- * int keyBits: ¸¶½ºÅÍ Å°ÀÇ ±æÀÌ
+/* ì•”í˜¸í™” ë¼ìš´ë“œ í‚¤ ìƒì„±
+ * const Byte *mk: ë§ˆìŠ¤í„° í‚¤
+ * Byte *rk: ë¼ìš´ë“œ í‚¤
+ * int keyBits: ë§ˆìŠ¤í„° í‚¤ì˜ ê¸¸ì´
  */
 extern "C" DECRYPTOR_API int EncKeySetup(const Byte* mk, Byte* rk, int keyBits);
 
-/* º¹È£È­ ¶ó¿îµå Å° »ı¼º
- * const Byte *mk: ¸¶½ºÅÍ Å°
- * Byte *rk: ¶ó¿îµå Å°
- * int keyBits: ¸¶½ºÅÍ Å°ÀÇ ±æÀÌ
+/* ë³µí˜¸í™” ë¼ìš´ë“œ í‚¤ ìƒì„±
+ * const Byte *mk: ë§ˆìŠ¤í„° í‚¤
+ * Byte *rk: ë¼ìš´ë“œ í‚¤
+ * int keyBits: ë§ˆìŠ¤í„° í‚¤ì˜ ê¸¸ì´
  */
 extern "C" DECRYPTOR_API int DecKeySetup(const Byte* mk, Byte* rk, int keyBits);
 
-/* º¹È£È­ ¹× ÆĞµù È®ÀÎ ¸ğµâ
- * struct CTX* ctx: ¾ÏÈ£¹® context
+/* ë³µí˜¸í™” ë° íŒ¨ë”© í™•ì¸ ëª¨ë“ˆ
+ * struct CTX* ctx: ì•”í˜¸ë¬¸ context
  */
 extern "C" DECRYPTOR_API int Dec_CTX(struct CTX* ctx);
