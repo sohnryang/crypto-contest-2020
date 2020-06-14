@@ -3,7 +3,7 @@ CXXFLAGS := -m32
 
 .PHONY: tester
 tester:
-	$(CXX) $(CXXFLAGS) ./tester.cc ./Decryptor.lib
+	$(CXX) $(CXXFLAGS) ./tester.cc ./Decryptor.lib -o tester.exe
 
 clean:
-	rm *.exe
+	rm a.exe
