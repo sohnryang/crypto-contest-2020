@@ -8,3 +8,7 @@
 .gitignore text
 .clang-format text
 Makefile text
+
+*.dll binary
+*.lib binary
+*.png binary
