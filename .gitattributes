@@ -1,0 +1,10 @@
+* text=lf
+*.cc text
+*.h text
+*.ino text
+*.txt text
+*.md text
+*.py text
+.gitignore text
+.clang-format text
+Makefile text
