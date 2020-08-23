@@ -57,16 +57,16 @@ def crack_hill(ciphertext, blocksize, metric=index_of_coincidence):
         print(x[::-1], end='')
         for i in range(m):
             p[i] = (p[i] + d[i, t]) % 26
-        iml_x = metric(p)
-        iml_y = I.min()
+        metric_x = metric(p)
+        metric_y = I.min()
         cand = I.argmin()
         mod_2_is_zero = vec % 2 == 0
         mod_13_is_zero = vec % 13 == 0
         if not np.all(np.logical_or(mod_2_is_zero, mod_13_is_zero)):
-            if iml_y < iml_x:
+            if metric_y < metric_x:
                 transposed = np.transpose(inv_K)
                 transposed[cand] = vec
-                I[cand] = iml_x
+                I[cand] = metric_x
 
     return inv_K
 
