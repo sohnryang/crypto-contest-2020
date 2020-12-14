@@ -1,4 +1,6 @@
 # 암호경진대회 2020
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fsohnryang%2Fcrypto-contest-2020.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fsohnryang%2Fcrypto-contest-2020?ref=badge_shield)
+
 
 ## 문제 목록
 
@@ -18,3 +20,7 @@
 
 ## 결과
 고등부 2등! 🎉🎉🎉
+
+
+## License
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fsohnryang%2Fcrypto-contest-2020.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fsohnryang%2Fcrypto-contest-2020?ref=badge_large)
